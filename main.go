@@ -24,9 +24,13 @@ func main() {
 		case reg:
 			fmt.Println("Введите логин и пароль в таком виде login_passwor")
 			fmt.Scan(&command) // Сделать так, что бы выводил сообщение, если пользователь уже существует
-			userList = append(userList, command)
-
-			message := fmt.Sprintf("Пользователь %s успешно добавлен", command)
+			message := ""
+			if !string_in_list(command, userList) {
+				userList = append(userList, command)
+				message = fmt.Sprintf("Пользователь %s успешно добавлен", command)
+			} else {
+				message = fmt.Sprintf("Пользователь %s уже существует", command)
+			}
 			fmt.Println(message)
 
 			fmt.Println(userList)
@@ -45,6 +49,15 @@ func main() {
 			}
 		}
 	}
+}
+
+func string_in_list(get_str string, list []string) bool {
+	for _, str := range list {
+		if str == get_str {
+			return true
+		}
+	}
+	return false
 }
 
 // Реализовать следующие АПИ
