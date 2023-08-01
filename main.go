@@ -1,19 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const (
-	exit = "exit"
-	auth = "auth"
-	reg  = "reg"
+	exit        = "exit"
+	auth        = "auth"
+	reg         = "reg"
+	add_product = "add_product"
+	add_to_cart = "add_to_cart"
+	order       = "order"
 )
 
 func main() {
 	var command string
 	userList := []string{"user1_password1", "user1_password1"}
 	productList := make([]string, 0, 10)
+	orderList := make([]string, 0, 10)
 
-	_ = productList
 	for command != exit {
 		fmt.Println("Введите команду") // Сделать красивый вывод, вывести список команд на этом шаге
 		fmt.Scan(&command)
@@ -47,6 +52,38 @@ func main() {
 				}
 
 			}
+		case add_product:
+			fmt.Println("Введите название продукта")
+			fmt.Scan(&command)
+			message := ""
+			if !string_in_list(command, productList) {
+				productList = append(productList, command)
+				message = fmt.Sprintf("Товар %s успешно добавлен в список товаров", command)
+			} else {
+				message = fmt.Sprintf("Товар %s уже существует", command)
+			}
+			fmt.Println(message)
+
+			fmt.Println(productList)
+
+		case add_to_cart:
+			fmt.Println(productList)
+			fmt.Println("Введите название продукта, который хотите выбрать")
+			fmt.Scan(&command)
+			message := ""
+			if string_in_list(command, productList) {
+				if !string_in_list(command, orderList) {
+					orderList = append(orderList, command)
+					message = fmt.Sprintf("Товар %s успешно добавлен в корзину", command)
+				} else {
+					message = fmt.Sprintf("Товар %s уже имеется в корзине", command)
+				}
+			} else {
+				message = fmt.Sprintf("Товара %s нет в списке товаров", command)
+			}
+			fmt.Println(message)
+
+			fmt.Println(orderList)
 		}
 	}
 }
